@@ -20,6 +20,13 @@ const userSchema = mongoose.Schema({
   lastName: {
     type: String,
   },
+  interests: {
+    type: Array,
+  },
+  picturePath:{
+    type: String,
+  },
+
   roles: {
     type: Array,
   },

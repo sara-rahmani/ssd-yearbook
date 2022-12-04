@@ -19,7 +19,12 @@
             <td>Last Name: </td>
             <td><input name="lastName" type="text"
                        value="<%= user.lastName ? user.lastName : '' %>"></td>
-        </tr>                        
+        </tr>  
+        <tr>
+            <td>Interests: </td>
+            <td><input name="interests" type="text"
+                       value="<%= user.interests ? user.interests.join(', ') : '' %>"></td>
+        </tr>                       
         <tr>
             <td>Password:</td>
             <td><input name="password" type="password"></td>
@@ -28,6 +33,7 @@
             <td>Password Confirmation:</td>
             <td><input name="passwordConfirm" type="password"></td>
         </tr> 
+      
         <tr>
             <td></td>
             <td> <input type="submit" value="Submit"></td>

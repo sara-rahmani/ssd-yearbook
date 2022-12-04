@@ -25,8 +25,10 @@ exports.RegisterUser = async function (req, res) {
       lastName: req.body.lastName,
       email: req.body.email,
       username: req.body.username,
+      interests: req.body.interests.split(", "),
     });
-
+    let users = await _userOps.getAllUsers();
+    let responseObj = await  _userOps.getRolesByUsername(newUser.username);
     // Uses passport to register the user.
     // Pass in user object without password
     // and password as next parameter.
@@ -41,15 +43,34 @@ exports.RegisterUser = async function (req, res) {
             user: newUser,
             errorMessage: err,
             reqInfo: reqInfo,
+
           });
         }
+
+        
         // User registered so authenticate and redirect to profile
         passport.authenticate("local")(req, res, function () {
-          res.redirect("/user/profile");
-        });
+        
+
+          res.render("profile", {
+            title: "Mongo Profiles - " + responseObj.obj.usename,
+            profiles: users,
+            profileId: responseObj.obj._id.valueOf(),
+            layout: "./layouts/sidebar",
+          });
+          // res.redirect(url.format({
+          //   pathname:"/user/profile",
+          //   }))
+          // });
+        })
+     
+     
+        }
+      );
+    
       }
-    );
-  } else {
+      
+    else {
     let reqInfo = RequestService.reqHelper(req);
     res.render("user/register", {
       user: {
@@ -57,6 +78,7 @@ exports.RegisterUser = async function (req, res) {
         lastName: req.body.lastName,
         email: req.body.email,
         username: req.body.username,
+
       },
       errorMessage: "Passwords do not match.",
       reqInfo: reqInfo,
