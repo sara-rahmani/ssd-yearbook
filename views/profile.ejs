@@ -1,0 +1,14 @@
+<% for (let i = 0; i < profiles.length; i++) { %> 
+  <% if(profiles[i].id === profileId) { %>
+  <h2><%= profiles[i].name%></h2>
+  <% if(profiles[i].picturePath) { %>
+    <img src="<%= profiles[i].picturePath %>" alt="<%= profiles[i].name %>" />
+  <% } %>
+  <ul>
+    <% for (let j = 0; j < profiles[i].interests.length; j++) { %>
+      <li><%= profiles[i].interests[j] %></li>
+    <% } %>
+  </ul>
+  <a href="/profiles/edit/<%= profileId %>"><button>Edit</button></a>
+  <% } %> 
+<% } %>
