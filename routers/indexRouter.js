@@ -1,6 +1,9 @@
 const express = require("express");
 const indexRouter = express.Router();
 
+const IndexController = require("../controllers/IndexController");
+
+indexRouter.get("/", IndexController.Index);
 indexRouter.get("/", (req, res) =>
   res.render("index", { title: "Mongo Profiles - Home" })
 );
