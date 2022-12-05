@@ -15,8 +15,8 @@ class UserOps {
   }
   async getProfileById(id) {
     console.log(`getting profile by id ${id}`);
-    let profile = await Profile.findById(id);
-    return profile;
+    let user = await User.findById(id);
+    return user;
   }
   async getAllUsers() {
     console.log("getting all profiles");

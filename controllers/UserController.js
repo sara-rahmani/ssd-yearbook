@@ -128,23 +128,35 @@ exports.Logout = (req, res) => {
 
 exports.Profile = async function (req, res) {
   let reqInfo = RequestService.reqHelper(req);
+  //const profileId = req.params.username;
+
   if (reqInfo.authenticated) {
     let roles = await _userOps.getRolesByUsername(reqInfo.username);
     let sessionData = req.session;
     sessionData.roles = roles;
     reqInfo.roles = roles;
+    let profile = await _userOps.getUserByUsername(reqInfo.username);
+
     let userInfo = await _userOps.getUserByUsername(reqInfo.username);
     let users = await _userOps.getAllUsers();
+    if (profile) {
 
 
     return res.render("user/profile", {
       reqInfo: reqInfo,
-      userInfo: userInfo,
+    //  userInfo: userInfo,
       users: users,
-      profileId: userInfo.user.username,
+      profileId: reqInfo.username,
       layout: "./layouts/sidebar",
 
     });
+  } else {
+    response.render("profiles", {
+      title: "Mongo Profiles - Profiles",
+      profiles: [],
+    });
+  }
+
   } else {
     res.redirect(
       "/user/login?errorMessage=You must be logged in to view this page."
