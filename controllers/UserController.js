@@ -27,8 +27,7 @@ exports.RegisterUser = async function (req, res) {
       username: req.body.username,
       interests: req.body.interests.split(", "),
     });
-    let users = await _userOps.getAllUsers();
-    let responseObj = await  _userOps.getRolesByUsername(newUser.username);
+    
     // Uses passport to register the user.
     // Pass in user object without password
     // and password as next parameter.
@@ -135,9 +134,16 @@ exports.Profile = async function (req, res) {
     sessionData.roles = roles;
     reqInfo.roles = roles;
     let userInfo = await _userOps.getUserByUsername(reqInfo.username);
+    let users = await _userOps.getAllUsers();
+
+
     return res.render("user/profile", {
       reqInfo: reqInfo,
       userInfo: userInfo,
+      users: users,
+      profileId: userInfo.user.username,
+      layout: "./layouts/sidebar",
+
     });
   } else {
     res.redirect(
