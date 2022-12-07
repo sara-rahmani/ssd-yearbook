@@ -1,22 +1,22 @@
 <h1>
-My Profile
-</h1>
+  My Profile
+  </h1>
 
-<% for (let i = 0; i < users.length; i++) { %> 
-    <% if(users[i].username === profileId) { %>
-Username: <%= users[i].username %><br/>
-Name: <%= users[i].firstName %> <%= users[i].lastName %><br/>
-Email: <%= users[i].email %><br/>
-Interests:<br/>   <ul>
-    <% for (let j = 0; j < users[i].interests.length; j++) { %>
-      <li><%= users[i].interests[j] %></li>
+  Username: <%= userInfo.user.username %><br/>
+  Name: <%= userInfo.user.firstName %> <%= userInfo.user.lastName %><br/>
+  Email: <%= userInfo.user.email %><br/>
+  Interests:<br/>   <ul>
+    <% for (let j = 0; j < userInfo.user.interests.length; j++) { %>
+      <li><%= userInfo.user.interests[j] %></li>
     <% } %>
   </ul>
-  <a href="/profiles/edit/<%= profileId %>"><button>Edit</button></a>
-  <% } %> 
-<% } %>
-
-<% if(reqInfo.roles?.length) { %>
-   
-Roles: <%= reqInfo.roles %>
-<% } %>
+  <% if(userInfo.user.picturePath) { %>
+    <img src="<%= userInfo.user.picturePath %>" alt="<%= userInfo.user.username %>" />
+  <% } %>
+    <a href="/user/register/<% userInfo.user._id %>"><button>Edit</button></a>
+ 
+  
+  <% if(reqInfo.roles?.length) { %>
+     
+  Roles: <%= reqInfo.roles %>
+  <% } %>

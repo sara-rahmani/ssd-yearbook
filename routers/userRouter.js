@@ -1,5 +1,6 @@
 const express = require("express");
 const userRouter = express.Router();
+const fs = require("fs").promises;
 
 const UserController = require("../controllers/UserController");
 
@@ -11,7 +12,8 @@ userRouter.post("/login", UserController.LoginUser);
 
 userRouter.get("/logout", UserController.Logout);
 
-userRouter.get("/:username", UserController.Profile);
+userRouter.get("/profile", UserController.Profile);
+userRouter.get("/register/:id", UserController.Edit);
 
 userRouter.get("/manager-area", UserController.ManagerArea);
 

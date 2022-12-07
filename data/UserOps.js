@@ -26,7 +26,7 @@ class UserOps {
   async getUserByUsername(username) {
     let user = await User.findOne(
       { username: username },
-      { _id: 0, username: 1, email: 1, firstName: 1, lastName: 1 }
+      { _id: 1, username: 1, email: 1, firstName: 1, lastName: 1,interests: 1,picturePath:1}
     );
     if (user) {
       const response = { user: user, errorMessage: "" };
