@@ -1,0 +1,11 @@
+1.Session - session timeout of 20 mins.
+2. Edit 
+   - Manager can edit roles
+   - User can edit their email, fname, lname, interests,profile picture, comments.
+3. Search - The user listing page should allow searching/filtering by any of the name fields, email
+  address, or interests
+
+4. Comments - users can add comments on other profiles.  
+
+5. Styling 
+
