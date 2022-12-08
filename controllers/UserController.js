@@ -148,7 +148,7 @@ exports.Index = async function (request, response) {
     profiles = await _userOps.getAllUsers();
   }
   let reqInfo = RequestService.reqHelper(request);
-
+//let roles=await _userOps.getRolesByUsername(reqInfo.username);
   if (profiles) {
 
     response.render("profiles", {
@@ -156,6 +156,7 @@ exports.Index = async function (request, response) {
       profiles: profiles,
       search: request.query.search,
       reqInfo: reqInfo,
+      //roles:roles,
 
     });
   } else {
@@ -164,6 +165,7 @@ exports.Index = async function (request, response) {
       title: "Mongo Profiles - Profiles",
       profiles: [],
       search: request.query.search,
+      //roles:roles,
 
     });
   }
@@ -215,6 +217,8 @@ exports.Index = async function (request, response) {
     console.log(`loading single profile by id ${profileId}`);
     let profile = await _userOps.getUserById(profileId);
     let profiles = await _userOps.getAllUsers();
+    //let roles=await _userOps.getRolesByUsername(reqInfo.username);
+
     if (profile) {
       response.render("profile", {
         title: "Mongo Profiles - " + profile.name,
@@ -222,11 +226,14 @@ exports.Index = async function (request, response) {
         profileId: request.params.id,
         layout: "./layouts/sidebar",
         reqInfo:reqInfo,
+       // roles:roles,
       });
     } else {
       response.render("profiles", {
         title: "Mongo Profiles - Profiles",
         profiles: [],
+       // roles:roles,
+
       });
     }
   };

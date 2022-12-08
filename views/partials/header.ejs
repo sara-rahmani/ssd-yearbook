@@ -3,28 +3,23 @@
     <nav>
         <ul>
             <li> <a href="/">Home</a> |</li>
-            <li> <%if (reqInfo.authenticated) { %>
-                <a href="/user">Profiles</a> |</li>
-                <li><% if (reqInfo.roles.includes("Admin")) { %>
-                    <a href='/user/admin-area'>Admin Area</a> | 
-                    <% } %></li>
-                    <li><% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager")) { %>
-                        <a href='/user/manager-area'>Manager Area</a> | 
-                        <% } %></li>
-                        <li>
-                            <a href='/user/logout'>Logout</a> [<%= reqInfo.username %>]
-
-                            <!-- 'else' must be in separate section with curly brackets to work. -->
-                            <% } else { %>
-                        </li>
-                        <li>
-
-                            <a href='/user/login'>Login</a> |
-                        </li>
-                        <li>
-                            <a href='/user/register'>Register</a> 
-                            <% } %>
-                        </li>
+                <!-- Show 'Logout' and user name if authenticated. -->
+                <%if (reqInfo.authenticated) { %>
+                     <a href="/user">Profiles</a> |
+    
+             
+    
+    
+                  <a href='/user/logout'>Logout</a> [<%= reqInfo.username %>]
+        
+                <!-- 'else' must be in separate section with curly brackets to work. -->
+                <% } else { %>
+               
+                  <a href='/user/login'>Login</a> |
+                   <a href='/user/register'>Register</a> 
+                <% } %>
+        
+                <!-- Child view goes here. -->
         </ul>
     </nav>
 </header>

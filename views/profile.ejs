@@ -9,7 +9,8 @@
       <li><%= profiles[i].interests[j] %></li>
     <% } %>
   </ul>
-  <li><% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager") || reqInfo.roles.includes("User") || reqInfo.username == profiles[i].username ) { %>
+  <li>
+    <% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("User") || reqInfo.username == profiles[i].username ) { %>
 
   <a href="/profiles/edit/<%= profileId %>"><button>Edit</button></a>
   <%}%>
