@@ -61,20 +61,8 @@ exports.RegisterUser = async function (req, res) {
         
         // User registered so authenticate and redirect to profile
         passport.authenticate("local")(req, res, function () {
-        
-
-          // res.render("profile", {
-          //   title: "Mongo Profiles - " + responseObj.obj.usename,
-          //   profiles: users,
-          //   profileId: responseObj.obj._id.valueOf(),
-          //   layout: "./layouts/sidebar",
-          // });
-          res.redirect("/user/profile");
-
-          
-        })
-     
-     
+          res.redirect("/user/profile");        
+        }) 
         }
       );
     
@@ -170,28 +158,7 @@ exports.Index = async function (request, response) {
     });
   }
 };
-// exports.Profile = async function (req, res) {
-//   const username = req.params.id;
 
-//   let reqInfo = RequestService.reqHelper(req);
-//   if (reqInfo.authenticated) {
-//     let roles = await _userOps.getRolesByUsername(username);
-//     let sessionData = req.session;
-//     sessionData.roles = roles;
-//     reqInfo.roles = roles;
-//     let userInfo = await _userOps.getUserById(username);
-//     console.log(userInfo);
-//     return res.render("user/profile", {
-//       reqInfo: reqInfo,
-//       userInfo: userInfo,
-//       profileId:userInfo.user._id,
-//     });
-//   } else {
-//     res.redirect(
-//       "/user/login?errorMessage=You must be logged in to view this page."
-//     );
-//   }
-// };
   exports.Edit = async function (request, response) {
     const profileId = request.params.id;
     //let profileObj = await _userOps.getRolesByUsername(profileId);
@@ -206,8 +173,6 @@ exports.Index = async function (request, response) {
       reqInfo: reqInfo,
     //  profile_id: profileId,
       //user: profileObj,
-
-
       userInfo: userInfo,
     });
   };
@@ -238,44 +203,6 @@ exports.Index = async function (request, response) {
     }
   };
 
-// exports.Profile = async function (req, res) {
-//   let reqInfo = RequestService.reqHelper(req);
-//   const profileId = req.params.username;
-
-//   if (reqInfo.authenticated) {
-//     let roles = await _userOps.getRolesByUsername(reqInfo.username);
-//     let sessionData = req.session;
-//     sessionData.roles = roles;
-//     reqInfo.roles = roles;
-//     let profile = await _userOps.getUserByUsername(reqInfo.username);
-
-//     let userInfo = await _userOps.getUserByUsername(reqInfo.username);
-//     let users = await _userOps.getAllUsers();
-//     if (profile) {
-
-
-//     return res.render("user/profile/<% reqInfo.username%>", {
-//       reqInfo: reqInfo,
-//      userInfo: userInfo,
-//       users: users,
-//       profileId: reqInfo.username,
-//        layout: "./layouts/sidebar",
-
-//     });
-//   } else {
-//     response.render("profiles", {
-//       title: "Mongo Profiles - Profiles",
-//       profiles: [],
-//     });
-//   }
-
-//   } else {
-//     res.redirect(
-//       "/user/login?errorMessage=You must be logged in to view this page."
-//     );
-//   }
-// };
-
 // Manager Area available to users who belong to Admin and/or Manager role
 exports.ManagerArea = async function (req, res) {
   let reqInfo = RequestService.reqHelper(req, ["Admin", "Manager"]);
@@ -285,19 +212,6 @@ exports.ManagerArea = async function (req, res) {
   } else {
     res.redirect(
       "/user/login?errorMessage=You must be a manager or admin to access this area."
-    );
-  }
-};
-
-// Admin Area available to users who belong to Admin role
-exports.AdminArea = async function (req, res) {
-  let reqInfo = RequestService.reqHelper(req, ["Admin"]);
-
-  if (reqInfo.rolePermitted) {
-    res.render("user/admin-area", { errorMessage: "", reqInfo: reqInfo });
-  } else {
-    res.redirect(
-      "/user/login?errorMessage=You must be an admin to access this area."
     );
   }
 };

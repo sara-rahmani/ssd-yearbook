@@ -1,5 +1,5 @@
 {
-  "name": "ssd28-node-day04",
+  "name": "ssd-yearbook",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,15 +9,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jbsolcraft/SSD28-Node-A03-MongoCrud.git"
+    "url": "git+https://github.com/sara-rahmani/ssd-yearbook.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jbsolcraft/SSD28-Node-A03-MongoCrud/issues"
+  "author": {
+    "name": "sara-rahmani",
+    "url": "https://github.com/sara-rahmani"
+
   },
-  "homepage": "https://github.com/jbsolcraft/SSD28-Node-A03-MongoCrud#readme",
+  "contributor": {
+    "name": "kritib2502",
+    "url": "https://github.com/kritib2502"
+  },
+  "license": "ISC",
+
   "dependencies": {
     "body-parser": "^1.20.1",
     "connect-mongodb-session": "^3.1.1",
