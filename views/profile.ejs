@@ -1,6 +1,6 @@
 <% for (let i = 0; i < profiles.length; i++) { %> 
   <% if(profiles[i].id === profileId) { %>
-  <h2><%= profiles[i].name%></h2>
+  <h2><%= profiles[i].username%></h2>
   <% if(profiles[i].picturePath) { %>
     <img src="<%= profiles[i].picturePath %>" alt="<%= profiles[i].name %>" />
   <% } %>
@@ -9,6 +9,9 @@
       <li><%= profiles[i].interests[j] %></li>
     <% } %>
   </ul>
+  <li><% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager") || reqInfo.roles.includes("User") || reqInfo.username == profiles[i].username ) { %>
+
   <a href="/profiles/edit/<%= profileId %>"><button>Edit</button></a>
+  <%}%>
   <% } %> 
 <% } %>

@@ -35,6 +35,14 @@ class UserOps {
       return null;
     }
   }
+  async getProfilesByNameSearch(search) {
+    console.log("searching profiles for: ", search);
+    const filter = { name: { $regex: search, $options: "i" } };
+
+    let profiles = await UserOps.find(filter).sort({ name: 1 });
+    return profiles;
+  }
+
   async getUserById(id) {
     console.log(`getting profile by id ${id}`);
     let user = await User.findById(id);

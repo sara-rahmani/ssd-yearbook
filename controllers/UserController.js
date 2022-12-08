@@ -138,7 +138,36 @@ exports.Logout = (req, res) => {
     }
   });
 };
+exports.Index = async function (request, response) {
+  console.log("loading profiles from controller");
+  let profiles = null;
 
+  if (request.query.search) {
+    profiles = await _userOps.getProfilesByNameSearch(request.query.search);
+  } else {
+    profiles = await _userOps.getAllUsers();
+  }
+  let reqInfo = RequestService.reqHelper(request);
+
+  if (profiles) {
+
+    response.render("profiles", {
+      title: "Mongo Profiles - Profiles",
+      profiles: profiles,
+      search: request.query.search,
+      reqInfo: reqInfo,
+
+    });
+  } else {
+
+    response.render("profiles", {
+      title: "Mongo Profiles - Profiles",
+      profiles: [],
+      search: request.query.search,
+
+    });
+  }
+};
 // exports.Profile = async function (req, res) {
 //   const username = req.params.id;
 
@@ -183,7 +212,6 @@ exports.Logout = (req, res) => {
   exports.Detail = async function (request, response) {
     const profileId = request.params.id;
     let reqInfo = RequestService.reqHelper(request);
-
     console.log(`loading single profile by id ${profileId}`);
     let profile = await _userOps.getUserById(profileId);
     let profiles = await _userOps.getAllUsers();

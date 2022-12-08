@@ -3,12 +3,20 @@
   <h2>Profiles</h2>
 </div>
 <div class="profile-list">
-
+  <div class="profile-list-header">
+    <form id="profile-search" action="/user" method="GET">
+      <input type="text" name="search" id="search" placeholder="Search by Name" value="<%= search %>">
+      <button type="submit">Search</button>
+    </form>
+  </div>
   <ul class="alternating-rows">
     <% for (let i = 0; i < profiles.length; i++ ) {%>
     <li>
-      <a href="/profiles/<%= profiles[i].id %>"><%= profiles[i].name %></a>
-      <a href="/profiles/<%= profiles[i].id %>/delete"><button class="delete">Delete</button></a>
+      <a href="/user/<%= profiles[i].id %>"><%= profiles[i].username %></a>
+      <li><% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager")) { %>
+
+      <a href="/user/<%= profiles[i].id %>/delete"><button class="delete">Delete</button></a>
+      <% } %>
     </li>
     <% } %>
   </ul>
