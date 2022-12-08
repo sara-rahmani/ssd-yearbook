@@ -1,0 +1,10 @@
+<h1>Profiles</h1>
+<ul>
+  <% for (let i = 0; i < users.length; i++) { %> <%if(users[i].username ) {%>
+  <li><a href="<%= users[i].username%>"><%= users[i].username%></a></li>
+  <% } %> <% } %>
+</ul>
+
+<!-- 
+!=
+  profileId -->

@@ -4,7 +4,18 @@ const RequestService = require("../services/RequestService");
 
 // import and instantiate our userOps object
 const UserOps = require("../data/UserOps");
+const _ = require("passport-local-mongoose");
 const _userOps = new UserOps();
+
+exports.Profiles = async function (request, response) {
+  console.log("loading profiles from controller");
+  let profiles = await _userOps.getAllUsers();
+  return response.render("user/profiles", {
+    title: "Express Yourself - Profiles",
+    users: profiles.length ? profiles : [],
+  });
+};
+
 
 // Displays registration form.
 exports.Register = async function (req, res) {
