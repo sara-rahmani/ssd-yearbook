@@ -29,8 +29,8 @@ const cors = require("cors");
 const fileUpload = require("express-fileupload");
 
 const indexRouter = require("./routers/indexRouter");
-const profilesRouter = require("./routers/profilesRouter");
-const apiRouter = require("./routers/apiRouter");
+// const profilesRouter = require("./routers/profilesRouter");
+// const apiRouter = require("./routers/apiRouter");
 
 const port = process.env.PORT || 3003;
 const app = express();
@@ -107,10 +107,10 @@ app.use("/user", userRouter);
 const secureRouter = require("./routers/secureRouter");
 app.use("/secure", secureRouter);
 // profiles routes
-app.use("/profiles", profilesRouter);
+// app.use("/profiles", profilesRouter);
 
-// api routes
-app.use("/api", apiRouter);
+// // api routes
+// app.use("/api", apiRouter);
 
 // handle unrecognized routes
 app.get("*", function (req, res) {

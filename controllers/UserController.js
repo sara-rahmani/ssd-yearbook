@@ -203,15 +203,4 @@ exports.Index = async function (request, response) {
     }
   };
 
-// Manager Area available to users who belong to Admin and/or Manager role
-exports.ManagerArea = async function (req, res) {
-  let reqInfo = RequestService.reqHelper(req, ["Admin", "Manager"]);
 
-  if (reqInfo.rolePermitted) {
-    res.render("user/manager-area", { errorMessage: "", reqInfo: reqInfo });
-  } else {
-    res.redirect(
-      "/user/login?errorMessage=You must be a manager or admin to access this area."
-    );
-  }
-};

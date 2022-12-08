@@ -16,8 +16,4 @@ userRouter.get("/logout", UserController.Logout);
 userRouter.get("/:id", UserController.Detail);
 userRouter.get("/register/:id", UserController.Edit);
 
-userRouter.get("/manager-area", UserController.ManagerArea);
-
-userRouter.get("/admin-area", UserController.AdminArea);
-
 module.exports = userRouter;
