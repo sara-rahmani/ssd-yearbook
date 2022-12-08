@@ -35,7 +35,11 @@ class UserOps {
       return null;
     }
   }
-
+  async getUserById(id) {
+    console.log(`getting profile by id ${id}`);
+    let user = await User.findById(id);
+    return user;
+  }
   async getRolesByUsername(username) {
     let user = await User.findOne({ username: username }, { _id: 0, roles: 1 });
     if (user.roles) {

@@ -17,9 +17,9 @@
     <div id="sidebar">
       <main><%- body %></main>
       <ul>
-        <% for (let i = 0; i < users.length; i++) { %> <%if(users[i].username !=
+        <% for (let i = 0; i < profiles.length; i++) { %> <%if(profiles[i].id !=
         profileId) {%>
-        <li><a href="<%= users[i].username%>"><%= users[i].username%></a></li>
+        <li><a href="<%= profiles[i].id%>"><%= profiles[i].username%></a></li>
         <% } %> <% } %>
       </ul>
     </div>

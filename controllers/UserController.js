@@ -110,8 +110,10 @@ exports.Login = async function (req, res) {
 
 // Receives login information & user roles, then store roles in session and redirect depending on authentication pass or fail.
 exports.LoginUser = async (req, res, next) => {
+    let userInfo = await _userOps.getUserByUsername(req.body.username);
+
   passport.authenticate("local", {
-    successRedirect: "/user/profile",
+    successRedirect: "/user/"+userInfo.user._id,
     failureRedirect: "/user/login?errorMessage=Invalid login.",
   })(req, res, next);
 };
@@ -137,26 +139,28 @@ exports.Logout = (req, res) => {
   });
 };
 
-exports.Profile = async function (req, res) {
-  let reqInfo = RequestService.reqHelper(req);
-  if (reqInfo.authenticated) {
-    let roles = await _userOps.getRolesByUsername(reqInfo.username);
-    let sessionData = req.session;
-    sessionData.roles = roles;
-    reqInfo.roles = roles;
-    let userInfo = await _userOps.getUserByUsername(reqInfo.username);
-    console.log(userInfo);
-    return res.render("user/profile", {
-      reqInfo: reqInfo,
-      userInfo: userInfo,
-      profileId:userInfo.user._id,
-    });
-  } else {
-    res.redirect(
-      "/user/login?errorMessage=You must be logged in to view this page."
-    );
-  }
-};
+// exports.Profile = async function (req, res) {
+//   const username = req.params.id;
+
+//   let reqInfo = RequestService.reqHelper(req);
+//   if (reqInfo.authenticated) {
+//     let roles = await _userOps.getRolesByUsername(username);
+//     let sessionData = req.session;
+//     sessionData.roles = roles;
+//     reqInfo.roles = roles;
+//     let userInfo = await _userOps.getUserById(username);
+//     console.log(userInfo);
+//     return res.render("user/profile", {
+//       reqInfo: reqInfo,
+//       userInfo: userInfo,
+//       profileId:userInfo.user._id,
+//     });
+//   } else {
+//     res.redirect(
+//       "/user/login?errorMessage=You must be logged in to view this page."
+//     );
+//   }
+// };
   exports.Edit = async function (request, response) {
     const profileId = request.params.id;
     //let profileObj = await _userOps.getRolesByUsername(profileId);
@@ -176,7 +180,28 @@ exports.Profile = async function (req, res) {
       userInfo: userInfo,
     });
   };
-  
+  exports.Detail = async function (request, response) {
+    const profileId = request.params.id;
+    let reqInfo = RequestService.reqHelper(request);
+
+    console.log(`loading single profile by id ${profileId}`);
+    let profile = await _userOps.getUserById(profileId);
+    let profiles = await _userOps.getAllUsers();
+    if (profile) {
+      response.render("profile", {
+        title: "Mongo Profiles - " + profile.name,
+        profiles: profiles,
+        profileId: request.params.id,
+        layout: "./layouts/sidebar",
+        reqInfo:reqInfo,
+      });
+    } else {
+      response.render("profiles", {
+        title: "Mongo Profiles - Profiles",
+        profiles: [],
+      });
+    }
+  };
 
 // exports.Profile = async function (req, res) {
 //   let reqInfo = RequestService.reqHelper(req);
@@ -194,12 +219,12 @@ exports.Profile = async function (req, res) {
 //     if (profile) {
 
 
-//     return res.render("user/profile", {
+//     return res.render("user/profile/<% reqInfo.username%>", {
 //       reqInfo: reqInfo,
 //      userInfo: userInfo,
-//       // users: users,
-//       // profileId: reqInfo.username,
-//       // layout: "./layouts/sidebar",
+//       users: users,
+//       profileId: reqInfo.username,
+//        layout: "./layouts/sidebar",
 
 //     });
 //   } else {

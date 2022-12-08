@@ -4,7 +4,7 @@
         <ul>
             <li> <a href="/">Home</a> |</li>
             <li> <%if (reqInfo.authenticated) { %>
-                <a href="/user/profiles">Profiles</a> |</li>
+                <a href="/profiles">Profiles</a> |</li>
                 <li><% if (reqInfo.roles.includes("Admin")) { %>
                     <a href='/user/admin-area'>Admin Area</a> | 
                     <% } %></li>

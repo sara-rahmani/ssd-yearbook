@@ -12,7 +12,7 @@ userRouter.post("/login", UserController.LoginUser);
 
 userRouter.get("/logout", UserController.Logout);
 
-userRouter.get("/profile", UserController.Profile);
+userRouter.get("/:id", UserController.Detail);
 userRouter.get("/register/:id", UserController.Edit);
 
 userRouter.get("/manager-area", UserController.ManagerArea);
