@@ -2,9 +2,9 @@
    
     <nav>
         <ul>
-            
+            <li> <a href="/">Home</a> |</li>
             <li> <%if (reqInfo.authenticated) { %>
-                <a href="/">Home</a> | <a href="/user/profile">My Profile</a> |</li>
+                <a href="/user/profiles">Profiles</a> |</li>
                 <li><% if (reqInfo.roles.includes("Admin")) { %>
                     <a href='/user/admin-area'>Admin Area</a> | 
                     <% } %></li>
