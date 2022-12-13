@@ -39,7 +39,7 @@ exports.RegisterUser = async function (req, res) {
       picturePath: picturePath,
 
     });
-    
+
     // Uses passport to register the user.
     // Pass in user object without password
     // and password as next parameter.
@@ -50,10 +50,14 @@ exports.RegisterUser = async function (req, res) {
         // Show registration form with errors if fail.
         if (err) {
           let reqInfo = RequestService.reqHelper(req);
+         // let roles=await _userOps.getRolesByUsername(reqInfo.username);
+
           return res.render("user/register", {
             user: newUser,
             errorMessage: err,
             reqInfo: reqInfo,
+           // roles:roles,
+
 
           });
         }
@@ -61,6 +65,7 @@ exports.RegisterUser = async function (req, res) {
         
         // User registered so authenticate and redirect to profile
         passport.authenticate("local")(req, res, function () {
+          
           res.redirect("/user/profile");        
         }) 
         }
@@ -130,13 +135,13 @@ exports.Index = async function (request, response) {
   console.log("loading profiles from controller");
   let profiles = null;
 
-  if (request.query.search) {
-    profiles = await _userOps.getProfilesByNameSearch(request.query.search);
+  if (request.query.search && request.query.selectFilter) {
+    profiles = await _userOps.getProfilesByNameSearch(request.query.search,request.query.selectFilter);
   } else {
     profiles = await _userOps.getAllUsers();
   }
   let reqInfo = RequestService.reqHelper(request);
-//let roles=await _userOps.getRolesByUsername(reqInfo.username);
+let roles=await _userOps.getRolesByUsername(reqInfo.username);
   if (profiles) {
 
     response.render("profiles", {
@@ -144,7 +149,7 @@ exports.Index = async function (request, response) {
       profiles: profiles,
       search: request.query.search,
       reqInfo: reqInfo,
-      //roles:roles,
+      roles:roles,
 
     });
   } else {
@@ -153,36 +158,108 @@ exports.Index = async function (request, response) {
       title: "Mongo Profiles - Profiles",
       profiles: [],
       search: request.query.search,
-      //roles:roles,
+      roles:roles,
+      reqInfo: reqInfo,
+
 
     });
   }
 };
 
-  exports.Edit = async function (request, response) {
-    const profileId = request.params.id;
-    //let profileObj = await _userOps.getRolesByUsername(profileId);
-    console.log(`loading single profile by id ${profileId}`);
+  // exports.Edit = async function (request, response) {
+  //   const profileId = request.params.id;
+  //   //let profileObj = await _userOps.getRolesByUsername(profileId);
+  //   console.log(`loading single profile by id ${profileId}`);
 
-    let reqInfo = RequestService.reqHelper(request);
-   // let profileObj = await _userOps.getProfileById(request.params.id);
-    let userInfo = await _userOps.getUserByUsername(reqInfo.username);
+  //   let reqInfo = RequestService.reqHelper(request);
+  //  // let profileObj = await _userOps.getProfileById(request.params.id);
+  //   let userInfo = await _userOps.getUserByUsername(reqInfo.username);
 
-    console.log(userInfo);
-    response.render("user/register", {
-      reqInfo: reqInfo,
-    //  profile_id: profileId,
-      //user: profileObj,
-      userInfo: userInfo,
+  //   console.log(userInfo);
+  //   response.render("user/register", {
+  //     reqInfo: reqInfo,
+  //   //  profile_id: profileId,
+  //     //user: profileObj,
+  //     userInfo: userInfo,
+  //   });
+  // };
+  // Handle edit profile form GET request
+exports.Edit = async function (request, response) {
+  const profileId = request.params.id;
+  let reqInfo = RequestService.reqHelper(request);
+
+  let profile = await _userOps.getUserById(profileId);
+  response.render("user/register", {
+    errorMessage: "",
+    profile_id: profileId,
+    user: profile,
+    reqInfo: reqInfo,
+
+  });
+};
+// Handle profile edit form submission
+exports.EditProfile = async function (request, response) {
+  const { picture } = request.files;
+  let picturePath = request.body.profilePic || "";
+  if (picture) {
+    picturePath = `/images/${picture.name}`;
+    const serverPath = path.join(__dirname, "../public", picturePath);
+    picture.mv(serverPath);
+  }
+
+  const profileId = request.body.profile_id;
+  const profileFName = request.body.firstName;
+  const profileLName = request.body.lastName;
+  const profileEmail = request.body.email;
+
+  let profileInterests = [];
+  if (request.body.interests) {
+    profileInterests = request.body.interests.split(", ");
+  }
+
+  // send these to profileOps to update and save the document
+  let responseObj = await _userOps.updateProfileById(
+    profileId,
+    profileEmail,
+    profileFName,
+    profileLName,
+    profileInterests,
+    picturePath
+  );
+  let reqInfo = RequestService.reqHelper(request);
+
+  // if no errors, save was successful
+  if (responseObj.errorMsg == "") {
+    let profiles = await _userOps.getAllUsers();
+    response.render("profile", {
+      title: "Mongo Profiles - " + responseObj.obj.name,
+      profiles: profiles,
+      profileId: responseObj.obj._id.valueOf(),
+      layout: "./layouts/sidebar",
+      reqInfo:reqInfo,
+
     });
-  };
+  }
+  // There are errors. Show form the again with an error message.
+  else {
+    console.log("An error occured. Item not created.");
+    response.render("user/register", {
+      title: "Mongo Profiles - Edit Profile",
+      profile: responseObj.obj,
+      profileId: profileId,
+      errorMessage: responseObj.errorMsg,
+    });
+  }
+};
+
   exports.Detail = async function (request, response) {
     const profileId = request.params.id;
     let reqInfo = RequestService.reqHelper(request);
     console.log(`loading single profile by id ${profileId}`);
     let profile = await _userOps.getUserById(profileId);
     let profiles = await _userOps.getAllUsers();
-    //let roles=await _userOps.getRolesByUsername(reqInfo.username);
+    console.log("reqInfo",reqInfo.roles);
+    let roles=await _userOps.getRolesById(profileId);
 
     if (profile) {
       response.render("profile", {
@@ -191,16 +268,45 @@ exports.Index = async function (request, response) {
         profileId: request.params.id,
         layout: "./layouts/sidebar",
         reqInfo:reqInfo,
-       // roles:roles,
+       roles:roles,
       });
     } else {
       response.render("profiles", {
         title: "Mongo Profiles - Profiles",
         profiles: [],
-       // roles:roles,
+        reqInfo:reqInfo,
+
+       roles:roles,
 
       });
     }
+    
+
   };
 
 
+// Handle delete profile GET request
+exports.DeleteUserById = async function (request, response) {
+  const profileId = request.params.id;
+  console.log(`deleting single profile by id ${profileId}`);
+  let deletedProfile = await _userOps.deleteUserById(profileId);
+  let profiles = await _userOps.getAllUsers();
+  let reqInfo = RequestService.reqHelper(request);
+let roles=await _userOps.getRolesByUsername(reqInfo.username);
+  if (deletedProfile) {
+    response.render("profiles", {
+      profiles: profiles,
+      search: "",
+      reqInfo: reqInfo,
+      roles:roles,
+    });
+  } else {
+    response.render("profiles", {
+      profiles: profiles,
+      errorMessage: "Error.  Unable to Delete",
+      search: "",
+      reqInfo: reqInfo,
+      roles:roles,
+    });
+  }
+};

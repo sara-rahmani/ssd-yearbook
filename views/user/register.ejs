@@ -1,11 +1,17 @@
-<form action="/profiles/edit<%= user._id ? "/"+user._id :  "" %>" method="POST" enctype="multipart/form-data">  
+
+<h3><%= profile_id ? "Edit Profile" : "New User" %> </h3>
+<form action="/user/register<%= profile_id ? "/"+profile_id : "" %>" method="POST" enctype="multipart/form-data">  
     <table>
-        
+        <input type="hidden" id="profile_id" name="profile_id" value="<%= profile_id %>">
+
+        <% if (!profile_id) { %>
+
         <tr>
             <td>User Name: </td>
             <td><input name="username" type="text"
                        value="<%= user.username ? user.username : '' %>"></td>
         </tr>
+        <% } %>
         <tr>
             <td>Email: </td>
             <td><input name="email" type="text"
@@ -29,11 +35,15 @@
         
             <tr>
                 <td>Profile Picture: </td>
-                <td>
+                <td>    <input id="profilePic" name="profilePic" type="hidden" value="<%= user.picturePath %>">
+                    <% if (user.picturePath) { %>
+                        <img src="<%= user.picturePath %>">
+                    <% } %>
                     <input type="file" name="picture"/>
                 </td>
             </tr>  
             <tr>
+                <% if (!profile_id) { %>
             <td>Password:</td>
             <td><input name="password" type="password"></td>
            </tr>
@@ -41,9 +51,20 @@
             <td>Password Confirmation:</td>
             <td><input name="passwordConfirm" type="password"></td>
         </tr> 
-      
-        <tr>
+      <% } %>
+
+                <tr>            <% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager")) { %>
+
+                    <td> Roles: </td>
+                    <td><input name="username" type="checkbox"
+                               value="<%= user.roles ? user.roles : '' %>">
+                            </td>
+                </tr>
+                <% } %>
+                <tr>
+
             <td></td>
+
             <td> <input type="submit" value="Submit"></td>
         </tr>
     </table>

@@ -6,6 +6,15 @@
   <div class="profile-list-header">
     <form id="profile-search" action="/user" method="GET">
       <input type="text" name="search" id="search" placeholder="Search by Name" value="<%= search %>">
+      <select name="selectFilter">
+        <optgroup label="Select Filter">
+            <option name="firstName" value="firstName">firstName</option>
+            <option name="lastName" value="lastName">lastName</option>
+            <option name="email" value="email">email</option>
+            <option name="interests" value="interests">interests</option>
+            <option name="username" value="username">username</option>
+        </optgroup>
+    </select>
       <button type="submit">Search</button>
     </form>
   </div>
@@ -13,7 +22,7 @@
     <% for (let i = 0; i < profiles.length; i++ ) {%>
     <li>
       <a href="/user/<%= profiles[i].id %>"><%= profiles[i].username %></a>
-      <li><% if (reqInfo.roles.includes("Admin")) { %>
+      <li><% if (roles.includes("Admin")) { %>
 
       <a href="/user/<%= profiles[i].id %>/delete"><button class="delete">Delete</button></a>
       <% } %>

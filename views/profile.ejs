@@ -10,9 +10,9 @@
     <% } %>
   </ul>
   <li>
-    <% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("User") || reqInfo.username == profiles[i].username ) { %>
+    <% if (roles.includes("Admin") || roles.includes("User") || reqInfo.username == profiles[i].username ) { %>
 
-  <a href="/profiles/edit/<%= profileId %>"><button>Edit</button></a>
+  <a href="/user/register/<%= profileId %>"><button>Edit</button></a>
   <%}%>
   <% } %> 
 <% } %>
