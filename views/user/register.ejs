@@ -4,6 +4,7 @@
     <table>
         <input type="hidden" id="profile_id" name="profile_id" value="<%= profile_id %>">
 
+
         <% if (!profile_id) { %>
 
         <tr>
@@ -41,6 +42,7 @@
                     <% } %>
                     <input type="file" name="picture"/>
                 </td>
+
             </tr>  
             <tr>
                 <% if (!profile_id) { %>
@@ -53,16 +55,17 @@
         </tr> 
       <% } %>
 
-                <tr>            <% if (roles.includes("Admin") || roles.includes("Manager")) { %>
+      <tr>            <%   if (reqInfo.authenticated) {
+        if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager")) { %>
 
-                    <td> Roles: </td>
-                    <td> <input type="checkbox" name="roles" value="Admin" <%= user.roles.includes("Admin") && "checked"%>>Admin
-                        <input type="checkbox" name="roles" value="Manager" <%= user.roles.includes("Manager") && "checked"%>>Manager
-                        <input type="checkbox" name="roles" value="User" <%= user.roles.includes("User") && "checked"%>>User
-                            </td>
-                </tr>
-                <% } %>
-                <tr>
+        <td for="roles"> Roles: </td>
+        <td> <input type="checkbox" name="roles" value="Admin" <%= user.roles.includes("Admin") && "checked"%>>Admin
+            <input type="checkbox" name="roles" value="Manager" <%= user.roles.includes("Manager") && "checked"%>>Manager
+            <input type="checkbox" name="roles" value="User" <%= user.roles.includes("User") && "checked"%>>User
+                </td>
+                <% } }%>
+
+    </tr>
 
             <td></td>
 

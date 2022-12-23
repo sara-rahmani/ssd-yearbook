@@ -1,15 +1,18 @@
-<% for (let i = 0; i < profiles.length; i++) { %> 
-  <% if(profiles[i].id === profileId) { %>
-  <h2><%= profiles[i].username%></h2>
-  <% if(profiles[i].picturePath) { %>
-    <img src="<%= profiles[i].picturePath %>" alt="<%= profiles[i].name %>" />
-  <% } %>
-  <ul>
-    <% for (let j = 0; j < profiles[i].interests.length; j++) { %>
-      <li><%= profiles[i].interests[j] %></li>
-    <% } %>
-  </ul>
 
+  <h2><%= profile.username%></h2>
+  <% if(profile.picturePath) { %>
+    <img src="<%= profile.picturePath %>" alt="<%= profile.name %>" />
+  <% } %>
+  <ul>            <% if(profile.interests.length !=0) {%>
+
+    <% for (let j = 0; j < profile.interests.length; j++) { %>
+      <li><%= profile.interests[j] %></li>
+    <% } %>
+
+  </ul>
+<% }else{ %>
+                    <p>no interests</p>
+                    <% } %>
   <p>Leave a comment: </p>
 </div>
 <form action="/profiles/<%= profileId %>" method="POST">
@@ -17,11 +20,11 @@
     <button type="submit">Submit</button>
 </form>
 
-<% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager") || (reqInfo.roles.includes("User") &&
-    reqInfo.username==profileName)) { %>
-    <a href="/user/register/<%= profileId %>"><button>Edit</button></a>
-    <% } %>
-  <li>
+
    
-  <% } %> 
-<% } %>
+ 
+<% 
+if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager") ||  
+    reqInfo.username==profile.username) { %>
+      <a href="/user/register/<%= profileId %>"><button>Edit</button></a>
+        <%  }%>

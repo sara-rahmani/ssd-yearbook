@@ -1,6 +1,7 @@
 const express = require("express");
 const userRouter = express.Router();
 const fs = require("fs").promises;
+const path = require("path");
 
 const UserController = require("../controllers/UserController");
 userRouter.get("/", UserController.Index);

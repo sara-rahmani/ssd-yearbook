@@ -11,7 +11,8 @@ const _userOps = new UserOps();
 // Displays registration form.
 exports.Register = async function (req, res) {
   let reqInfo = RequestService.reqHelper(req);
-  res.render("user/register", { errorMessage: "", user: {}, reqInfo: reqInfo });
+  res.render("user/register", { errorMessage: "", user: {}, reqInfo: reqInfo ,    profile_id: null
+});
 };
 
 // Handles 'POST' with registration form submission.
@@ -62,11 +63,11 @@ exports.RegisterUser = async function (req, res) {
           });
         }
 
-        
+
         // User registered so authenticate and redirect to profile
         passport.authenticate("local")(req, res, function () {
-          
-          res.redirect("/user/profile");        
+
+          res.redirect("/user/"+newUser._id);        
         }) 
         }
       );
@@ -132,6 +133,13 @@ exports.Logout = (req, res) => {
   });
 };
 exports.Index = async function (request, response) {
+  let reqInfo = RequestService.reqHelper(request);
+  if (reqInfo.authenticated) {
+    let roles = await _userOps.getRolesByUsername(reqInfo.username);
+    let sessionData = request.session;
+    sessionData.roles = roles;
+    reqInfo.roles = roles;
+    console.log("reqqqqqq"+reqInfo.roles);
   console.log("loading profiles from controller");
   let profiles = null;
 
@@ -140,8 +148,6 @@ exports.Index = async function (request, response) {
   } else {
     profiles = await _userOps.getAllUsers();
   }
-  let reqInfo = RequestService.reqHelper(request);
-let roles=await _userOps.getRolesByUsername(reqInfo.username);
   if (profiles) {
 
     response.render("profiles", {
@@ -149,7 +155,7 @@ let roles=await _userOps.getRolesByUsername(reqInfo.username);
       profiles: profiles,
       search: request.query.search,
       reqInfo: reqInfo,
-      roles:roles,
+     // roles:roles,
 
     });
   } else {
@@ -158,12 +164,12 @@ let roles=await _userOps.getRolesByUsername(reqInfo.username);
       title: "Mongo Profiles - Profiles",
       profiles: [],
       search: request.query.search,
-      roles:roles,
+     // roles:roles,
       reqInfo: reqInfo,
 
 
     });
-  }
+  }}
 };
 
 exports.Comment = async function (request, response) {
@@ -240,17 +246,24 @@ exports.Edit = async function (request, response) {
 };
 // Handle profile edit form submission
 exports.EditProfile = async function (request, response) {
-  const { picture } = request.files;
-  let picturePath = request.body.profilePic || "";
+  const profileId = request.body.profile_id;
+  let profile=await _userOps.getUserById(request.body.profile_id);
+   let picturePath = request.body.profilePic ? request.body.profilePic : profile.imagePath;
+  
+  if(request.files) {
+    const { picture } = request.files;
+  //let picturePath = request.body.profilePic || "";
   if (picture) {
     picturePath = `/images/${picture.name}`;
     const serverPath = path.join(__dirname, "../public", picturePath);
     picture.mv(serverPath);
   }
-
-  const profileId = request.body.profile_id;
+  }
+  //const profileId = request.body.profile_id;
   const profileFName = request.body.firstName;
   const profileLName = request.body.lastName;
+  const profileRoles = request.body.roles ? request.body.roles : profile.roles;
+  console.log(profileRoles);
   const profileEmail = request.body.email;
 
   let profileInterests = [];
@@ -265,15 +278,18 @@ exports.EditProfile = async function (request, response) {
     profileFName,
     profileLName,
     profileInterests,
-    picturePath
+    picturePath,
+    profileRoles
+
   );
   let reqInfo = RequestService.reqHelper(request);
-
+ profile=await _userOps.getUserById(request.body.profile_id);
   // if no errors, save was successful
   if (responseObj.errorMsg == "") {
     let profiles = await _userOps.getAllUsers();
     response.render("profile", {
       title: "Mongo Profiles - " + responseObj.obj.name,
+      profile:profile,
       profiles: profiles,
       profileId: responseObj.obj._id.valueOf(),
       layout: "./layouts/sidebar",
@@ -296,17 +312,20 @@ exports.EditProfile = async function (request, response) {
   exports.Detail = async function (request, response) {
     const profileId = request.params.id;
     let reqInfo = RequestService.reqHelper(request);
+    let roles = await _userOps.getRolesByUsername(reqInfo.username);
+    let sessionData = request.session;
+    sessionData.roles = roles;
+    reqInfo.roles = roles;
     console.log(`loading single profile by id ${profileId}`);
     let profile = await _userOps.getUserById(profileId);
     let profiles = await _userOps.getAllUsers();
     console.log("reqInfo",reqInfo.roles);
-    let roles=await _userOps.getRolesById(profileId);
-    let sessionData = request.session;
-    sessionData.roles = roles;
+    
     if (profile) {
       response.render("profile", {
         title: "Mongo Profiles - " + profile.name,
         profiles: profiles,
+        profile:profile,
         profileId: request.params.id,
         layout: "./layouts/sidebar",
         reqInfo:reqInfo,

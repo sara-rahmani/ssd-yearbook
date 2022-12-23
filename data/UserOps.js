@@ -89,7 +89,7 @@ console.log("profiles searched :",profiles)
     }
   }
   
-  async updateProfileById(id,profileEmail, profileFName,profileLName, profileInterests, picturePath) {
+  async updateProfileById(id,profileEmail, profileFName,profileLName, profileInterests, picturePath,roles) {
     console.log(`updating user profile by id ${id}`);
     const user = await User.findById(id);
     console.log("original user profile: ", user);
@@ -98,6 +98,7 @@ console.log("profiles searched :",profiles)
      user.email=profileEmail;
     user.interests = profileInterests;
     user.picturePath = picturePath;
+    user.roles = roles;
 
     let result = await user.save();
     console.log("updated profile: ", result);
