@@ -149,12 +149,16 @@ exports.Index = async function (request, response) {
     profiles = await _userOps.getAllUsers();
   }
   if (profiles) {
+    console.log(reqInfo.username);
 
+let profile= await _userOps.getUserByUsername(reqInfo.username);
+console.log(profile._id)
     response.render("profiles", {
       title: "Mongo Profiles - Profiles",
       profiles: profiles,
       search: request.query.search,
       reqInfo: reqInfo,
+      profileId: profile.user._id,
      // roles:roles,
 
     });
@@ -236,7 +240,7 @@ exports.Edit = async function (request, response) {
   console.log(reqInfo.username);
   let roles = await _userOps.getRolesById(profileId);
   let profile = await _userOps.getUserById(profileId);
-  response.render("user/register", {
+  response.render("user/edit", {
     errorMessage: "",
     profile_id: profileId,
     user: profile,
@@ -300,7 +304,7 @@ exports.EditProfile = async function (request, response) {
   // There are errors. Show form the again with an error message.
   else {
     console.log("An error occured. Item not created.");
-    response.render("user/register", {
+    response.render("user/edit", {
       title: "Mongo Profiles - Edit Profile",
       profile: responseObj.obj,
       profileId: profileId,

@@ -1,18 +1,16 @@
 
-<h3><%= profile_id ? "Edit Profile" : "New User" %> </h3>
-<form action="/user/register<%= profile_id ? "/"+profile_id : "" %>" method="POST" enctype="multipart/form-data">  
+<h3>New User</h3>
+<form action="/user/register" method="POST" enctype="multipart/form-data">  
     <table>
         <input type="hidden" id="profile_id" name="profile_id" value="<%= profile_id %>">
 
 
-        <% if (!profile_id) { %>
 
         <tr>
             <td>User Name: </td>
             <td><input name="username" type="text"
                        value="<%= user.username ? user.username : '' %>"></td>
         </tr>
-        <% } %>
         <tr>
             <td>Email: </td>
             <td><input name="email" type="text"
@@ -45,7 +43,6 @@
 
             </tr>  
             <tr>
-                <% if (!profile_id) { %>
             <td>Password:</td>
             <td><input name="password" type="password"></td>
            </tr>
@@ -53,19 +50,8 @@
             <td>Password Confirmation:</td>
             <td><input name="passwordConfirm" type="password"></td>
         </tr> 
-      <% } %>
 
-      <tr>            <%   if (reqInfo.authenticated) {
-        if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager")) { %>
-
-        <td for="roles"> Roles: </td>
-        <td> <input type="checkbox" name="roles" value="Admin" <%= user.roles.includes("Admin") && "checked"%>>Admin
-            <input type="checkbox" name="roles" value="Manager" <%= user.roles.includes("Manager") && "checked"%>>Manager
-            <input type="checkbox" name="roles" value="User" <%= user.roles.includes("User") && "checked"%>>User
-                </td>
-                <% } }%>
-
-    </tr>
+    
 
             <td></td>
 

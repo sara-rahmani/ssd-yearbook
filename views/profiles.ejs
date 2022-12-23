@@ -19,10 +19,16 @@
     </form>
   </div>
   <ul class="alternating-rows">
-    <% for (let i = 0; i < profiles.length; i++ ) {%>
+    <li>
+      <a href="/user/<%= profileId %>"> ☆ My Profile</a>
+      <li> 
+    <% for (let i = 0; i < profiles.length; i++ ) {
+      if(profiles[i].username!=reqInfo.username){%>
+      
     <li>
       <a href="/user/<%= profiles[i].id %>"><%= profiles[i].username %></a>
-      <li>            
+      <li>             <% } %>
+         
 
         <%   
           if (reqInfo.roles.includes("Admin")) { %>

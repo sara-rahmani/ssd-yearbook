@@ -64,7 +64,7 @@ console.log("profiles searched :",profiles)
   }
   async getRolesByUsername(username) {
     console.log(username);
-    let user = await User.findOne({ username: username }, { _id: 0, roles: 1 });
+    let user = await User.findOne({ username: username }, { _id: 0 , roles: 1 });
     console.log(user);
     if (user.roles) {
       return user.roles;
