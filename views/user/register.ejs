@@ -53,11 +53,12 @@
         </tr> 
       <% } %>
 
-                <tr>            <% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager")) { %>
+                <tr>            <% if (roles.includes("Admin") || roles.includes("Manager")) { %>
 
                     <td> Roles: </td>
-                    <td><input name="username" type="checkbox"
-                               value="<%= user.roles ? user.roles : '' %>">
+                    <td> <input type="checkbox" name="roles" value="Admin" <%= user.roles.includes("Admin") && "checked"%>>Admin
+                        <input type="checkbox" name="roles" value="Manager" <%= user.roles.includes("Manager") && "checked"%>>Manager
+                        <input type="checkbox" name="roles" value="User" <%= user.roles.includes("User") && "checked"%>>User
                             </td>
                 </tr>
                 <% } %>

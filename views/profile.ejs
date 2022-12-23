@@ -9,10 +9,19 @@
       <li><%= profiles[i].interests[j] %></li>
     <% } %>
   </ul>
-  <li>
-    <% if (roles.includes("Admin") || roles.includes("User") || reqInfo.username == profiles[i].username ) { %>
 
-  <a href="/user/register/<%= profileId %>"><button>Edit</button></a>
-  <%}%>
+  <p>Leave a comment: </p>
+</div>
+<form action="/profiles/<%= profileId %>" method="POST">
+    <textarea id="comments" class="comments" name="comments"></textarea>
+    <button type="submit">Submit</button>
+</form>
+
+<% if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager") || (reqInfo.roles.includes("User") &&
+    reqInfo.username==profileName)) { %>
+    <a href="/user/register/<%= profileId %>"><button>Edit</button></a>
+    <% } %>
+  <li>
+   
   <% } %> 
 <% } %>

@@ -166,6 +166,46 @@ let roles=await _userOps.getRolesByUsername(reqInfo.username);
   }
 };
 
+exports.Comment = async function (request, response) {
+  let reqInfo = RequestService.reqHelper(request);
+  const comment = {
+    commentBody: request.body.comments,
+    commentAuthor: reqInfo.username,
+  };
+  let profileInfo = await _userOps.addCommentToUser(
+    comment,
+    request.params.id
+  );
+  const profileId = request.params.id;
+  console.log(`loading single profile by id ${profileId}`);
+  let profile = await _userOps.getProfileById(profileId);
+  let profiles = await _userOps.getAllProfiles();
+  if (profile) {
+    response.render("profile", {
+      title: "Express Yourself - " + profile.username,
+      profiles: profiles,
+      profileId: request.params.id,
+      profileName: profile.username,
+      profileFirstName: profile.firstName,
+      profileLastName: profile.lastName,
+      profileImagePath: profile.imagePath,
+      profileInterests: profile.interests,
+      profileEmail: profile.email,
+      profileComment: profile.comments,
+      profileCommentBody: profileInfo.commentBody,
+      profileCommentAuthor: profileInfo.commentAuthor,
+      layout: "./layouts/sidebar",
+      reqInfo: reqInfo
+
+    });
+  } else {
+    response.render("profiles", {
+      title: "Express Yourself - Profiles",
+      profiles: [],
+      reqInfo: reqInfo
+    });
+  }
+};
   // exports.Edit = async function (request, response) {
   //   const profileId = request.params.id;
   //   //let profileObj = await _userOps.getRolesByUsername(profileId);
@@ -187,14 +227,15 @@ let roles=await _userOps.getRolesByUsername(reqInfo.username);
 exports.Edit = async function (request, response) {
   const profileId = request.params.id;
   let reqInfo = RequestService.reqHelper(request);
-
+  console.log(reqInfo.username);
+  let roles = await _userOps.getRolesById(profileId);
   let profile = await _userOps.getUserById(profileId);
   response.render("user/register", {
     errorMessage: "",
     profile_id: profileId,
     user: profile,
     reqInfo: reqInfo,
-
+    roles: roles
   });
 };
 // Handle profile edit form submission
@@ -260,7 +301,8 @@ exports.EditProfile = async function (request, response) {
     let profiles = await _userOps.getAllUsers();
     console.log("reqInfo",reqInfo.roles);
     let roles=await _userOps.getRolesById(profileId);
-
+    let sessionData = request.session;
+    sessionData.roles = roles;
     if (profile) {
       response.render("profile", {
         title: "Mongo Profiles - " + profile.name,
