@@ -1,10 +1,22 @@
+<% if(profile.username == reqInfo.username){ %>
+  <p>
+<b>Your Profile : </b><%= profile.firstName%> <%= profile.lastName%></p> 
 
-  <h2><%= profile.username%></h2>
+<%}else{ %>
+  <p> <b>User's Profile: </b><%= profile.firstName%> <%= profile.lastName%></p>  <% } %>
   <% if(profile.picturePath) { %>
     <img src="<%= profile.picturePath %>" alt="<%= profile.name %>" />
   <% } %>
-  <ul>            <% if(profile.interests.length !=0) {%>
+  <p>
+    <b>UserName: </b><%= profile.username%></p> 
+    
+    
 
+      <b>Email: </b><%= profile.email%></p> 
+
+
+      <ul>            <% if(profile.interests.length !=0) {%>
+<b>Interests</b>
     <% for (let j = 0; j < profile.interests.length; j++) { %>
       <li><%= profile.interests[j] %></li>
     <% } %>
@@ -13,18 +25,20 @@
 <% }else{ %>
                     <p>no interests</p>
                     <% } %>
-  <p>Leave a comment: </p>
-</div>
+                    <% if(profile.username != reqInfo.username){ %>
+        
+  <b>Leave a comment: </b>
 <form action="/profiles/<%= profileId %>" method="POST">
     <textarea id="comments" class="comments" name="comments"></textarea>
-    <button type="submit">Submit</button>
-</form>
+    <br/><button type="submit">Submit comment</button><% } %>
+  </form>
+
+    <% 
+if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager") || (reqInfo.roles.includes("User") && 
+    reqInfo.username==profile.username) ){ %>
+     <br/> <a href="/user/edit/<%= profileId %>"><button class="edit">Edit Profile</button></a>
+        <%  }%>
 
 
    
  
-<% 
-if (reqInfo.roles.includes("Admin") || reqInfo.roles.includes("Manager") ||  
-    reqInfo.username==profile.username) { %>
-      <a href="/user/edit/<%= profileId %>"><button>Edit</button></a>
-        <%  }%>

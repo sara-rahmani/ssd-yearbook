@@ -7,22 +7,30 @@
     <link rel="stylesheet" href="/styles/styles.css" />
   </head>
   <style>
-    #sidebar {
-      display: flex;
-      justify-content: space-between;
-    }
+   
   </style>
-  <body>
+  <body>   
+     <div class="wrapper">
+
     <%- include('../partials/header.ejs') %>
     <div id="sidebar">
-      <main><%- body %></main>
-      <ul>
+  
+    <main><%- body %></main>
+    <br/>
+      
+        <ul>
+          <b>the others profiles</b>
         <% for (let i = 0; i < profiles.length; i++) { %> <%if(profiles[i].id !=
         profileId) {%>
-        <li><a href="<%= profiles[i].id%>"><%= profiles[i].username%></a></li>
+        <li>
+          <a href="<%= profiles[i].id%>">
+            <%= profiles[i].username%></a>
+        </li>
         <% } %> <% } %>
-      </ul>
-    </div>
+      </ul>   
+     </div>
+
     <%- include('../partials/footer.ejs') %>
+     </div>
   </body>
 </html>

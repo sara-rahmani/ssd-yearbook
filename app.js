@@ -79,6 +79,7 @@ app.use(fileUpload());
 // use express.static middleware to make the public folder accessible
 app.use(express.static("public"));
 
+
 // Enable layouts
 app.use(expressLayouts);
 // Set the default layout

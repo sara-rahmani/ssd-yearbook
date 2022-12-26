@@ -170,6 +170,8 @@ console.log(profile._id)
       search: request.query.search,
      // roles:roles,
       reqInfo: reqInfo,
+      profileId: profile.user._id,
+
 
 
     });
@@ -235,11 +237,17 @@ exports.Comment = async function (request, response) {
   // };
   // Handle edit profile form GET request
 exports.Edit = async function (request, response) {
-  const profileId = request.params.id;
+  console.log("ediiiiit0"+request);
+
   let reqInfo = RequestService.reqHelper(request);
-  console.log(reqInfo.username);
+  console.log("ediiiiit0"+reqInfo.username);
+
+  const profileId = request.params.id;
+  console.log("ediiiiit1"+reqInfo.username);
   let roles = await _userOps.getRolesById(profileId);
   let profile = await _userOps.getUserById(profileId);
+  console.log("ediiiiit"+profile);
+
   response.render("user/edit", {
     errorMessage: "",
     profile_id: profileId,
@@ -314,6 +322,7 @@ exports.EditProfile = async function (request, response) {
 };
 
   exports.Detail = async function (request, response) {
+
     const profileId = request.params.id;
     let reqInfo = RequestService.reqHelper(request);
     let roles = await _userOps.getRolesByUsername(reqInfo.username);
@@ -327,7 +336,6 @@ exports.EditProfile = async function (request, response) {
     
     if (profile) {
       response.render("profile", {
-        title: "Mongo Profiles - " + profile.name,
         profiles: profiles,
         profile:profile,
         profileId: request.params.id,
@@ -337,7 +345,6 @@ exports.EditProfile = async function (request, response) {
       });
     } else {
       response.render("profiles", {
-        title: "Mongo Profiles - Profiles",
         profiles: [],
         reqInfo:reqInfo,
 
@@ -357,6 +364,8 @@ exports.DeleteUserById = async function (request, response) {
   let deletedProfile = await _userOps.deleteUserById(profileId);
   let profiles = await _userOps.getAllUsers();
   let reqInfo = RequestService.reqHelper(request);
+  let profile= await _userOps.getUserByUsername(reqInfo.username);
+
 let roles=await _userOps.getRolesByUsername(reqInfo.username);
   if (deletedProfile) {
     response.render("profiles", {
@@ -364,6 +373,8 @@ let roles=await _userOps.getRolesByUsername(reqInfo.username);
       search: "",
       reqInfo: reqInfo,
       roles:roles,
+      profileId: profile.user._id,
+
     });
   } else {
     response.render("profiles", {
@@ -372,6 +383,8 @@ let roles=await _userOps.getRolesByUsername(reqInfo.username);
       search: "",
       reqInfo: reqInfo,
       roles:roles,
+      profileId: profile.user._id,
+
     });
   }
 };

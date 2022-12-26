@@ -1,10 +1,11 @@
-<article>
+<div class="profiles">
+
 <div class="section-header">
   <h2>Profiles</h2>
 </div>
 <div class="profile-list">
   <div class="profile-list-header">
-    <form id="profile-search" action="/user" method="GET">
+    <form class="form" id="profile-search" action="/user" method="GET">
       <input type="text" name="search" id="search" placeholder="Search by Name" value="<%= search %>">
       <select name="selectFilter">
         <optgroup label="Select Filter">
@@ -18,26 +19,26 @@
       <button type="submit">Search</button>
     </form>
   </div>
+    <a href="/user/<%= profileId %>"> ☆ My Profile</a>
   <ul class="alternating-rows">
-    <li>
-      <a href="/user/<%= profileId %>"> ☆ My Profile</a>
-      <li> 
+   
     <% for (let i = 0; i < profiles.length; i++ ) {
       if(profiles[i].username!=reqInfo.username){%>
       
     <li>
-      <a href="/user/<%= profiles[i].id %>"><%= profiles[i].username %></a>
-      <li>             <% } %>
+      <a href="/user/<%= profiles[i].id %>"><%= profiles[i].firstName %> <%= profiles[i].lastName%></a>
+      <%   
+      if (reqInfo.roles.includes("Admin")) { %>
+
+       <a href="/user/<%= profiles[i].id %>/delete">  --->  Delete</a>
+  <% } %>
+                <% } %>
          
 
-        <%   
-          if (reqInfo.roles.includes("Admin")) { %>
-
-      <a href="/user/<%= profiles[i].id %>/delete"><button class="delete">Delete</button></a>
-      <% } %>
+       
     </li>
     <% } %>
 
   </ul>
 </div>
-<article>
+</div>

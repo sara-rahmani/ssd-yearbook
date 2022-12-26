@@ -109,7 +109,8 @@ console.log("profiles searched :",profiles)
     async deleteUserById(id) {
       console.log(`deleting user profile by id ${id}`);
       let result = await User.findByIdAndDelete(id);
-      console.log(result);
+      console.log("deleteeee"
+      +result);
       return result;
     }
 }
