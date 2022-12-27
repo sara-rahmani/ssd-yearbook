@@ -6,14 +6,14 @@
 <div class="profile-list">
   <div class="profile-list-header">
     <form class="form" id="profile-search" action="/user" method="GET">
-      <input type="text" name="search" id="search" placeholder="Search by Name" value="<%= search %>">
+      <input type="text" name="search" id="search" placeholder="Search by ..." value="<%= search %>">
       <select name="selectFilter">
         <optgroup label="Select Filter">
-            <option name="firstName" value="firstName">firstName</option>
-            <option name="lastName" value="lastName">lastName</option>
-            <option name="email" value="email">email</option>
-            <option name="interests" value="interests">interests</option>
-            <option name="username" value="username">username</option>
+            <option name="firstName" value="firstName">First Name</option>
+            <option name="lastName" value="lastName">Last Name</option>
+            <option name="email" value="email">Email</option>
+            <option name="interests" value="interests">Interests</option>
+            <option name="username" value="username">Username</option>
         </optgroup>
     </select>
       <button type="submit">Search</button>

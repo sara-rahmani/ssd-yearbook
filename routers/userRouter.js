@@ -18,6 +18,8 @@ userRouter.post("/login", UserController.LoginUser);
 userRouter.get("/logout", UserController.Logout);
 
 userRouter.get("/:id", UserController.Detail);
+userRouter.post("/:id", UserController.Comment);
+
 
 userRouter.get("/:id/delete", UserController.DeleteUserById);
 

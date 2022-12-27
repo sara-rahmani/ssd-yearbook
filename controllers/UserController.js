@@ -177,37 +177,41 @@ console.log(profile._id)
     });
   }}
 };
-
 exports.Comment = async function (request, response) {
+  console.log("Comment");
   let reqInfo = RequestService.reqHelper(request);
+  let profileInfo ;
+  if(request.body.comments != ""){
   const comment = {
     commentBody: request.body.comments,
     commentAuthor: reqInfo.username,
   };
-  let profileInfo = await _userOps.addCommentToUser(
+  profileInfo = await _userOps.addCommentToUser(
     comment,
     request.params.id
-  );
+  );}
+    // let roles = await _userOps.getRolesByUsername(reqInfo.username);
+    // let sessionData = request.session;
+    // sessionData.roles = roles;
+    // reqInfo.roles = roles;
+    
+    
   const profileId = request.params.id;
   console.log(`loading single profile by id ${profileId}`);
-  let profile = await _userOps.getProfileById(profileId);
-  let profiles = await _userOps.getAllProfiles();
+  let profile = await _userOps.getUserById(profileId);
+  let profiles = await _userOps.getAllUsers();
   if (profile) {
     response.render("profile", {
-      title: "Express Yourself - " + profile.username,
       profiles: profiles,
-      profileId: request.params.id,
-      profileName: profile.username,
-      profileFirstName: profile.firstName,
-      profileLastName: profile.lastName,
-      profileImagePath: profile.imagePath,
-      profileInterests: profile.interests,
-      profileEmail: profile.email,
-      profileComment: profile.comments,
-      profileCommentBody: profileInfo.commentBody,
-      profileCommentAuthor: profileInfo.commentAuthor,
-      layout: "./layouts/sidebar",
-      reqInfo: reqInfo
+        profile:profile,
+        profileId: request.params.id,
+        profileComment: profile.comments,
+        profileCommentBody: profileInfo.commentBody,
+        profileCommentAuthor: profileInfo.commentAuthor,
+        layout: "./layouts/sidebar",
+        
+        reqInfo:reqInfo,
+      // roles:roles,
 
     });
   } else {
@@ -333,6 +337,8 @@ exports.EditProfile = async function (request, response) {
     let profile = await _userOps.getUserById(profileId);
     let profiles = await _userOps.getAllUsers();
     console.log("reqInfo",reqInfo.roles);
+   
+    console.log("checkkkkkk"+profile.comments);
     
     if (profile) {
       response.render("profile", {
@@ -340,6 +346,7 @@ exports.EditProfile = async function (request, response) {
         profile:profile,
         profileId: request.params.id,
         layout: "./layouts/sidebar",
+        profileComment: profile.comments,
         reqInfo:reqInfo,
        roles:roles,
       });
