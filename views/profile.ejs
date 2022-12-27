@@ -25,12 +25,11 @@
 <% }else{ %>
                     <p>no interests</p>
                     <% } %>
-                    <% if(profile.username != reqInfo.username){ %>
         
   <b>Leave a comment: </b>
 <form action="/user/<%= profileId %>" method="POST">
     <textarea id="comments" class="comments" name="comments"></textarea>
-    <br/><button type="submit">Submit comment</button><% } %>
+    <br/><button type="submit">Submit comment</button>
   </form>
   <% if(profileComment.length !=0) {%>
   <b> Comments: </b>
@@ -38,8 +37,13 @@
 
   <ul id="commentList">
     <% for (let i=0; i < profileComment.length; i++) { %>
-        <li>
-          <b> <%= profileComment[i].commentAuthor%> : </b>  <%= profileComment[i].commentBody%>  
+        <li><% if(profileComment[i].commentAuthor!= profile.username) {%>
+          <b> <%= profileComment[i].commentAuthor%> : </b>                   
+             <% } else {%>
+              <b> Me : </b>                   
+              <% } %>
+
+             <%= profileComment[i].commentBody%>  
 
         </li>
         <% } %>
