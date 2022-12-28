@@ -104,14 +104,8 @@ app.use(indexRouter);
 const userRouter = require("./routers/userRouter");
 app.use("/user", userRouter);
 
-// Secure routes
-const secureRouter = require("./routers/secureRouter");
-app.use("/secure", secureRouter);
-// profiles routes
-// app.use("/profiles", profilesRouter);
 
-// // api routes
-// app.use("/api", apiRouter);
+
 
 // handle unrecognized routes
 app.get("*", function (req, res) {

@@ -13,11 +13,7 @@ class UserOps {
       return null;
     }
   }
-  async getProfileById(id) {
-    console.log(`getting profile by id ${id}`);
-    let user = await User.findById(id);
-    return user;
-  }
+  
   async getAllUsers() {
     console.log("getting all profiles");
     let users = await User.find().sort({ name: 1 });

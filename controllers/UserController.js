@@ -222,23 +222,7 @@ exports.Comment = async function (request, response) {
     });
   }
 };
-  // exports.Edit = async function (request, response) {
-  //   const profileId = request.params.id;
-  //   //let profileObj = await _userOps.getRolesByUsername(profileId);
-  //   console.log(`loading single profile by id ${profileId}`);
 
-  //   let reqInfo = RequestService.reqHelper(request);
-  //  // let profileObj = await _userOps.getProfileById(request.params.id);
-  //   let userInfo = await _userOps.getUserByUsername(reqInfo.username);
-
-  //   console.log(userInfo);
-  //   response.render("user/register", {
-  //     reqInfo: reqInfo,
-  //   //  profile_id: profileId,
-  //     //user: profileObj,
-  //     userInfo: userInfo,
-  //   });
-  // };
   // Handle edit profile form GET request
 exports.Edit = async function (request, response) {
   console.log("ediiiiit0"+request);
